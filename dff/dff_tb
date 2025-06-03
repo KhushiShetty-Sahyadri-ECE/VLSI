@@ -1,0 +1,47 @@
+`timescale 1ns / 1ps
+
+module dff_tb;
+
+reg clk;
+reg rst;
+reg d;
+wire q;
+
+// Instantiate the D flip-flop
+dff uut (
+    .clk(clk),
+    .rst(rst),
+    .d(d),
+    .q(q)
+);
+
+// Clock generation
+always #5 clk = ~clk;
+
+initial begin
+    // Dump waves
+    $dumpfile("dff_tb.vcd");
+    $dumpvars(0, dff_tb);
+
+    // Initialize inputs
+    clk = 0;
+    rst = 1;
+    d = 0;
+
+    // Reset pulse
+    #10;
+    rst = 0;
+
+    // Apply test vectors
+    d = 1; #10;
+    d = 0; #10;
+    d = 1; #10;
+    d = 1; #10;
+    d = 0; #10;
+
+    // Finish simulation
+    #10;
+    $finish;
+end
+
+endmodule
